@@ -85,8 +85,7 @@
     --m-hardware: #E8A55E;
 
     --font: "Segoe UI Variable Display", "Segoe UI", system-ui, -apple-system, sans-serif;
-    --nav-h: 4rem;
-    --measure: 64ch;
+    --nav-h: 3.5rem;
   }
 
   *, *::before, *::after { box-sizing: border-box; }
@@ -231,8 +230,8 @@
   .btn:active { transform: translateY(0); }
 
   .btn--lg {
-    font-size: 1.15rem;
-    padding: 1rem 2rem;
+    font-size: 1.05rem;
+    padding: 0.8rem 1.75rem;
   }
 
   .btn svg { width: 1.1em; height: 1.1em; flex: none; }
@@ -246,32 +245,39 @@
   .top {
     position: relative;
     overflow: hidden;
-    padding: clamp(1.5rem, 2.5vw, 2rem) 0;
+    padding: clamp(1rem, 1.5vw, 1.25rem) 0;
     background-color: var(--bg);
-    background-image:
-      linear-gradient(180deg, rgba(10, 15, 21, 0) 72%, var(--bg) 100%),
-      linear-gradient(90deg, rgba(10, 15, 21, 0) 66%, var(--bg) 100%),
-      linear-gradient(rgba(10, 15, 21, 0.62), rgba(10, 15, 21, 0.62)),
-      url("kotu-bg.png");
-    background-position: right center;
-    background-size: cover;
-    background-repeat: no-repeat;
   }
 
+  /* The city band lives inside the container's content box, not across
+     the viewport. It is scaled to 80% of that box and pinned top-right, so
+     the four lettered blocks sit under the download column. The last 5rem
+     fade into the page colour on the right, the left 40% fade in behind
+     the copy, and the top edge fades in from the page colour. */
   .top__grid {
     position: relative;
     z-index: 1;
+    background-image:
+      linear-gradient(180deg, var(--bg) 0%, rgba(10, 15, 21, 0) 18%, rgba(10, 15, 21, 0) 84%, var(--bg) 100%),
+      linear-gradient(90deg, rgba(10, 15, 21, 0) calc(100% - 5rem), var(--bg) 100%),
+      linear-gradient(90deg, var(--bg) 0%, rgba(10, 15, 21, 0) 40%),
+      linear-gradient(rgba(10, 15, 21, 0.62), rgba(10, 15, 21, 0.62)),
+      url("kotu-bg.png");
+    background-position: right top;
+    background-size: 80% auto;
+    background-repeat: no-repeat;
+    background-origin: content-box;
+    background-clip: content-box;
     display: grid;
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-    /* The middle row is empty: it keeps the section tall enough for the
+    /* The second row is empty: it keeps the section tall enough for the
        mascot, which is painted behind the grid. */
-    grid-template-rows: auto clamp(14rem, 28vh, 19rem) auto;
+    grid-template-rows: auto clamp(5rem, 11vh, 6.5rem);
     grid-template-areas:
       "copy   get"
-      ".      ."
-      "badges badges";
+      ".      .";
     column-gap: 2rem;
-    row-gap: 0.75rem;
+    row-gap: 0.6rem;
   }
 
   .hero__copy {
@@ -296,27 +302,27 @@
      it. Not mirrored: the mascot faces right, the way the blocks were hit. */
   .hero__img {
     position: absolute;
-    top: 24%;
-    left: calc(50% - 36rem - 1.5rem);
-    height: 82%;
+    top: 7.5%;
+    left: calc(50% - 36rem + 20rem);
+    height: 84%;
     width: auto;
     max-width: none;
     color: transparent;
-    filter: brightness(0.38) saturate(0.85);
+    filter: brightness(0.42) saturate(0.85);
     /* Two masks, intersected: the tail fades in from the left, the breath
-       fades out before the PNG edge, and the legs dissolve at the bottom. */
+       fades out at the PNG edge, and the feet dissolve at the bottom. */
     -webkit-mask-image:
-      linear-gradient(90deg, transparent 0%, #000 32%, #000 84%, transparent 100%),
-      linear-gradient(180deg, #000 68%, transparent 100%);
+      linear-gradient(90deg, transparent 0%, #000 32%, #000 88%, transparent 100%),
+      linear-gradient(180deg, #000 80%, transparent 100%);
     -webkit-mask-composite: source-in;
     mask-image:
-      linear-gradient(90deg, transparent 0%, #000 32%, #000 84%, transparent 100%),
-      linear-gradient(180deg, #000 68%, transparent 100%);
+      linear-gradient(90deg, transparent 0%, #000 32%, #000 88%, transparent 100%),
+      linear-gradient(180deg, #000 80%, transparent 100%);
     mask-composite: intersect;
   }
 
   .hero__wordmark {
-    font-size: clamp(4rem, 6.5vw, 7rem);
+    font-size: clamp(3.5rem, 4.5vw, 5rem);
     font-weight: 900;
     letter-spacing: 0.04em;
     line-height: 0.95;
@@ -324,37 +330,36 @@
   }
 
   .hero__sub {
-    font-size: clamp(1.15rem, 2.5vw, 1.5rem);
+    font-size: clamp(1rem, 1.5vw, 1.15rem);
     font-weight: 600;
     letter-spacing: 0.06em;
     text-transform: uppercase;
     color: var(--muted);
-    margin: 0.6rem 0 0;
+    margin: 0.3rem 0 0;
   }
 
   .hero__title {
-    font-size: clamp(1.75rem, 2.6vw, 2.5rem);
+    font-size: clamp(1.5rem, 2vw, 1.85rem);
     line-height: 1.15;
     max-width: 18ch;
-    margin: clamp(1rem, 2vw, 1.5rem) 0 0;
+    margin: 0.75rem 0 0;
   }
 
   .hero__list {
     color: var(--gold-soft);
     font-weight: 600;
-    font-size: clamp(1rem, 1.3vw, 1.2rem);
-    line-height: 1.7;
-    margin: 1.25rem 0 0;
+    font-size: clamp(0.95rem, 1.1vw, 1rem);
+    line-height: 1.5;
+    margin: 0.6rem 0 0;
   }
 
   .hero__list span { display: block; }
 
   /* ---------- badges ---------- */
 
+  .why { padding-top: 0.75rem; }
+
   .badges {
-    grid-area: badges;
-    position: relative;
-    z-index: 2;
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: 1rem;
@@ -365,31 +370,34 @@
 
   .badge {
     display: flex;
-    gap: 0.9rem;
-    align-items: flex-start;
+    gap: 0.6rem;
+    align-items: center;
     background: var(--surface);
     border: 1px solid var(--rule);
-    border-radius: 0.75rem;
-    padding: 1.1rem 1.15rem;
+    border-radius: 0.6rem;
+    padding: 0.5rem 0.75rem;
+    min-width: 0;
   }
 
   .badge svg {
-    width: 1.75rem;
-    height: 1.75rem;
+    width: 1.35rem;
+    height: 1.35rem;
     flex: none;
     color: var(--gold);
   }
 
   .badge__title {
     font-weight: 700;
-    line-height: 1.25;
+    font-size: 0.9rem;
+    line-height: 1.2;
     margin: 0;
   }
 
   .badge__sub {
-    font-size: 0.875rem;
+    font-size: 0.78rem;
+    line-height: 1.25;
     color: var(--muted);
-    margin: 0.25rem 0 0;
+    margin: 0.1rem 0 0;
   }
 
   /* ---------- download ---------- */
@@ -397,7 +405,7 @@
   .download {
     grid-area: get;
     align-self: center;
-    justify-self: center;
+    justify-self: end;
     position: relative;
     z-index: 2;
     text-align: center;
@@ -423,33 +431,33 @@
 
   .option__file {
     font-family: Consolas, "Cascadia Mono", ui-monospace, monospace;
-    font-size: 0.85rem;
+    font-size: 0.8rem;
     color: var(--muted);
-    margin: 0.65rem 0 0;
+    margin: 0.45rem 0 0;
     word-break: break-all;
   }
 
   .option__note {
-    font-size: 0.9rem;
+    font-size: 0.82rem;
     color: var(--muted);
     max-width: 26ch;
-    line-height: 1.45;
-    margin: 0.35rem 0 0;
+    line-height: 1.35;
+    margin: 0.25rem 0 0;
   }
 
   .download__os {
-    font-size: 0.9rem;
+    font-size: 0.82rem;
     color: var(--muted);
-    margin: 1.25rem 0 0;
+    margin: 0.7rem 0 0;
   }
 
   /* ---------- features ---------- */
 
-  .features { padding: clamp(1.25rem, 2.5vw, 2rem) 0; }
+  .features { padding: 0.9rem 0 1rem; }
 
   .section__title {
-    font-size: clamp(1.6rem, 3.5vw, 2.25rem);
-    margin-bottom: 1rem;
+    font-size: clamp(1.4rem, 2.5vw, 1.75rem);
+    margin-bottom: 0.6rem;
   }
 
   .section__title em {
@@ -460,7 +468,7 @@
   .cards {
     display: grid;
     grid-template-columns: repeat(6, minmax(0, 1fr));
-    gap: 1rem;
+    gap: 0.75rem;
     list-style: none;
     margin: 0;
     padding: 0;
@@ -470,30 +478,30 @@
     background: var(--surface);
     border: 1px solid var(--rule);
     border-top: 3px solid var(--hue);
-    border-radius: 0.75rem;
-    padding: 1.25rem 1rem 1.15rem;
+    border-radius: 0.6rem;
+    padding: 0.75rem 0.75rem 0.7rem;
     min-width: 0;
   }
 
   .card svg {
-    width: 2rem;
-    height: 2rem;
+    width: 1.5rem;
+    height: 1.5rem;
     color: var(--hue);
     display: block;
   }
 
   .card__name {
     font-weight: 700;
-    font-size: 1rem;
-    line-height: 1.25;
-    margin: 0.85rem 0 0;
+    font-size: 0.9rem;
+    line-height: 1.2;
+    margin: 0.5rem 0 0;
   }
 
   .card__desc {
-    font-size: 0.875rem;
+    font-size: 0.78rem;
     color: var(--muted);
-    line-height: 1.45;
-    margin: 0.35rem 0 0;
+    line-height: 1.35;
+    margin: 0.2rem 0 0;
   }
 
   /* ---------- closing ---------- */
@@ -501,7 +509,7 @@
   .closing {
     text-align: center;
     margin-top: 0;
-    padding: clamp(1.25rem, 2.5vw, 1.75rem) 0;
+    padding: 0.8rem 0 0.9rem;
     border-top: 1px solid var(--rule);
     border-bottom: 1px solid var(--rule);
   }
@@ -510,30 +518,31 @@
     font-weight: 600;
     letter-spacing: 0.08em;
     text-transform: uppercase;
-    font-size: clamp(0.85rem, 1.6vw, 1.05rem);
+    font-size: clamp(0.8rem, 1.2vw, 0.9rem);
     color: var(--gold-soft);
     margin: 0;
   }
 
   .closing__slogan {
-    font-size: clamp(1.6rem, 4vw, 2.75rem);
+    font-size: clamp(1.4rem, 2.6vw, 1.9rem);
     font-weight: 800;
     letter-spacing: -0.01em;
     line-height: 1.1;
     color: var(--gold);
-    margin: 0.75rem 0 0;
+    margin: 0.3rem 0 0;
   }
 
   /* ---------- footer ---------- */
 
   .foot {
-    padding-top: clamp(1.25rem, 2.5vw, 2rem);
-    padding-bottom: 1.5rem;
-    font-size: 0.9375rem;
+    padding-top: 0.8rem;
+    padding-bottom: 0.9rem;
+    font-size: 0.82rem;
+    line-height: 1.45;
     color: var(--muted);
   }
 
-  .foot p { margin: 0 0 0.85rem; max-width: var(--measure); }
+  .foot p { margin: 0 0 0.3rem; }
   .foot p:last-child { margin-bottom: 0; }
 
   .foot a {
@@ -558,15 +567,19 @@
   }
 
   @media (max-width: 47.99rem) {
-    .top {
+    .top__grid {
       background-image:
         linear-gradient(rgba(10, 15, 21, 0.74), rgba(10, 15, 21, 0.74)),
         url("kotu-bg.png");
+      background-size: cover;
+      background-position: right center;
+      background-origin: border-box;
+      background-clip: border-box;
     }
     .top__grid {
       grid-template-columns: minmax(0, 1fr);
       grid-template-rows: auto;
-      grid-template-areas: "copy" "get" "badges";
+      grid-template-areas: "copy" "get";
       row-gap: 1.5rem;
     }
     .hero__copy { max-width: none; }
@@ -651,38 +664,40 @@
       <div class="hero__stage" aria-hidden="true">
         <img class="hero__img" src="kotu-hero.png" alt="" width="1450" height="1090" loading="eager" decoding="async" onerror="this.style.display='none'">
       </div>
-
-      <ul class="badges" aria-label="Why KOTU">
-        <li class="badge">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 12v8H4v-8"/><path d="M2 7h20v5H2z"/><path d="M12 7v13"/></svg>
-          <div>
-            <p class="badge__title">No Bloat</p>
-            <p class="badge__sub">Just what you need</p>
-          </div>
-        </li>
-        <li class="badge">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17.9 17.9A10 10 0 0 1 2 12s3-7 10-7a9.7 9.7 0 0 1 3.5.6"/><path d="M22 12s-1 2.3-3 4"/><path d="M9.9 9.9a3 3 0 0 0 4.2 4.2"/><path d="M3 3l18 18"/></svg>
-          <div>
-            <p class="badge__title">No Ads, No Tracking</p>
-            <p class="badge__sub">Nothing runs in the background</p>
-          </div>
-        </li>
-        <li class="badge">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/><circle cx="12" cy="16" r="1"/></svg>
-          <div>
-            <p class="badge__title">No Personal Info Collection</p>
-            <p class="badge__sub">Your privacy is respected</p>
-          </div>
-        </li>
-        <li class="badge">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg>
-          <div>
-            <p class="badge__title">100% Free License</p>
-            <p class="badge__sub">Personal &amp; Commercial Use</p>
-          </div>
-        </li>
-      </ul>
     </div>
+  </section>
+
+  <section class="wrap why" aria-label="Why KOTU">
+    <ul class="badges">
+      <li class="badge">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 12v8H4v-8"/><path d="M2 7h20v5H2z"/><path d="M12 7v13"/></svg>
+        <div>
+          <p class="badge__title">No Bloat</p>
+          <p class="badge__sub">Just what you need</p>
+        </div>
+      </li>
+      <li class="badge">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17.9 17.9A10 10 0 0 1 2 12s3-7 10-7a9.7 9.7 0 0 1 3.5.6"/><path d="M22 12s-1 2.3-3 4"/><path d="M9.9 9.9a3 3 0 0 0 4.2 4.2"/><path d="M3 3l18 18"/></svg>
+        <div>
+          <p class="badge__title">No Ads, No Tracking</p>
+          <p class="badge__sub">Nothing runs in the background</p>
+        </div>
+      </li>
+      <li class="badge">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/><circle cx="12" cy="16" r="1"/></svg>
+        <div>
+          <p class="badge__title">No Personal Info Collection</p>
+          <p class="badge__sub">Your privacy is respected</p>
+        </div>
+      </li>
+      <li class="badge">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg>
+        <div>
+          <p class="badge__title">100% Free License</p>
+          <p class="badge__sub">Personal &amp; Commercial Use</p>
+        </div>
+      </li>
+    </ul>
   </section>
 
   <section class="features" id="features">
