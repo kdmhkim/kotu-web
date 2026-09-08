@@ -8,12 +8,12 @@
 
 <meta property="og:title" content="KOTU — King of the Util">
 <meta property="og:description" content="One Windows app for video, audio, images, documents, PDFs and archives. MIT licensed, open source.">
-<meta property="og:url" content="https://getkotu.com/kotu-download/">
+<meta property="og:url" content="https://getkotu.com/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="KOTU">
 <meta name="twitter:card" content="summary">
 <!-- og:image must stay an absolute URL - preview crawlers do not resolve relative paths. -->
-<meta property="og:image" content="https://getkotu.com/kotu-download/kotu-logo.png">
+<meta property="og:image" content="https://getkotu.com/kotu-logo.png">
 
 <link rel="icon" type="image/png" href="kotu-logo.png">
 
@@ -78,7 +78,6 @@
 
   body {
     margin: 0;
-    padding: var(--nav-h) 0 0;
     background: var(--bg);
     color: var(--ink);
     font-family: var(--font);
@@ -109,21 +108,17 @@
     padding-right: clamp(1.15rem, 5vw, 2.5rem);
   }
 
-  section { scroll-margin-top: calc(var(--nav-h) + 1rem); }
+  section { scroll-margin-top: 1rem; }
 
   /* ---------- nav ---------- */
 
+  /* In the document flow at the very top. Not fixed or sticky: pinned
+     bars get drawn at the scroll offset by full-page capture tools, which
+     made the bar appear mid-page in review screenshots. */
   .nav {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 10;
     height: var(--nav-h);
     background: rgba(10, 15, 21, 0.92);
     border-bottom: 1px solid var(--rule);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
   }
 
   .nav__inner {
@@ -225,84 +220,86 @@
 
   .btn svg { width: 1.1em; height: 1.1em; flex: none; }
 
-  /* ---------- hero ---------- */
+  /* ---------- top: hero, downloads and badges on one background ---------- */
 
-  /* Layers, bottom to top: city background, a light shade on the copy
-     side, the mascot, then the copy. The mascot lives in the space left
-     under the copy, so it never overlaps the text and never reaches the
-     lettered blocks on the right of the background. */
-  .hero {
+  /* One background for the whole top. The city image is pressed down by a
+     dark layer so it reads as atmosphere behind the mascot and the copy,
+     and it fades into the page colour on the right and at the bottom.
+     The mascot is a child element, so the dark layer never touches it. */
+  .top {
     position: relative;
     overflow: hidden;
-    min-height: clamp(36rem, calc(100vh - var(--nav-h)), 60rem);
-    display: flex;
-    flex-direction: column;
-    padding: clamp(1.5rem, 3vw, 2.5rem) 0 0;
+    padding: clamp(1.5rem, 2.5vw, 2rem) 0;
     background-color: var(--bg);
     background-image:
-      linear-gradient(90deg,
-        rgba(10, 15, 21, 0.5) 0%,
-        rgba(10, 15, 21, 0.3) 28%,
-        rgba(10, 15, 21, 0) 46%),
+      linear-gradient(180deg, rgba(10, 15, 21, 0) 72%, var(--bg) 100%),
+      linear-gradient(90deg, rgba(10, 15, 21, 0) 66%, var(--bg) 100%),
+      linear-gradient(rgba(10, 15, 21, 0.62), rgba(10, 15, 21, 0.62)),
       url("kotu-bg.png");
     background-position: right center;
     background-size: cover;
     background-repeat: no-repeat;
   }
 
-  .hero__content {
+  .top__grid {
     position: relative;
-    width: 100%;
-    flex: 1;
-    display: flex;
-    flex-direction: column;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    /* The middle row is empty: it keeps the section tall enough for the
+       mascot, which is painted behind the grid. */
+    grid-template-rows: auto clamp(14rem, 28vh, 19rem) auto;
+    grid-template-areas:
+      "copy   get"
+      ".      ."
+      "badges badges";
+    column-gap: 2rem;
+    row-gap: 0.75rem;
   }
 
   .hero__copy {
+    grid-area: copy;
     position: relative;
     z-index: 2;
     max-width: 36rem;
   }
 
-  /* Whatever height is left under the copy belongs to the mascot. */
+  /* The mascot is part of the background: a layer behind the grid, at
+     kaiju scale, darkened to the same tone as the city. */
   .hero__stage {
-    position: relative;
-    flex: 1;
-    min-height: 12rem;
-    margin-top: 0.75rem;
+    position: absolute;
+    inset: 0;
+    z-index: 0;
     pointer-events: none;
   }
 
-  /* Anchored bottom-left and pulled past the wrap edge on wide screens,
-     so the breath points at the glow left of the blocks. Not mirrored:
-     the mascot faces right, the way the blocks were hit. */
+  /* Positioned against the grid box: sized from its height, left edge a
+     little outside the wrap, so the mouth lands up-left of the BLOATWARE
+     block and the breath (which runs down-right inside the PNG) strikes
+     it. Not mirrored: the mascot faces right, the way the blocks were hit. */
   .hero__img {
     position: absolute;
-    bottom: 0;
-    left: calc(-1 * clamp(0px, (100vw - 72rem) / 2, 12rem));
-    height: 100%;
+    top: 24%;
+    left: calc(50% - 36rem - 1.5rem);
+    height: 82%;
     width: auto;
     max-width: none;
     color: transparent;
-  }
-
-  /* Bottom fade into the next section, over the mascot as well. */
-  .hero__fade {
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    height: 28%;
-    z-index: 1;
-    pointer-events: none;
-    background: linear-gradient(180deg,
-      rgba(10, 15, 21, 0) 0%,
-      rgba(10, 15, 21, 0.7) 70%,
-      var(--bg) 100%);
+    filter: brightness(0.38) saturate(0.85);
+    /* Two masks, intersected: the tail fades in from the left, the breath
+       fades out before the PNG edge, and the legs dissolve at the bottom. */
+    -webkit-mask-image:
+      linear-gradient(90deg, transparent 0%, #000 32%, #000 84%, transparent 100%),
+      linear-gradient(180deg, #000 68%, transparent 100%);
+    -webkit-mask-composite: source-in;
+    mask-image:
+      linear-gradient(90deg, transparent 0%, #000 32%, #000 84%, transparent 100%),
+      linear-gradient(180deg, #000 68%, transparent 100%);
+    mask-composite: intersect;
   }
 
   .hero__wordmark {
-    font-size: clamp(4.5rem, 7.5vw, 8rem);
+    font-size: clamp(4rem, 6.5vw, 7rem);
     font-weight: 900;
     letter-spacing: 0.04em;
     line-height: 0.95;
@@ -338,6 +335,9 @@
   /* ---------- badges ---------- */
 
   .badges {
+    grid-area: badges;
+    position: relative;
+    z-index: 2;
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: 1rem;
@@ -378,19 +378,12 @@
   /* ---------- download ---------- */
 
   .download {
+    grid-area: get;
+    align-self: center;
+    justify-self: center;
+    position: relative;
+    z-index: 2;
     text-align: center;
-    padding: clamp(3rem, 8vw, 5.5rem) 0 clamp(2.5rem, 6vw, 4rem);
-  }
-
-  .download__title {
-    font-size: clamp(1.6rem, 3.5vw, 2.25rem);
-    margin-bottom: 0.5rem;
-  }
-
-  .download__lead {
-    color: var(--muted);
-    max-width: 48ch;
-    margin: 0 auto;
   }
 
   .downloads {
@@ -398,8 +391,8 @@
     flex-wrap: wrap;
     justify-content: center;
     align-items: flex-start;
-    gap: clamp(1.25rem, 3vw, 2rem);
-    margin: 2rem 0 0;
+    gap: 1.5rem;
+    margin: 0;
   }
 
   .option {
@@ -409,7 +402,7 @@
     min-width: 0;
   }
 
-  .option .btn { min-width: 16rem; }
+  .option .btn { min-width: 14rem; }
 
   .option__file {
     font-family: Consolas, "Cascadia Mono", ui-monospace, monospace;
@@ -430,20 +423,19 @@
   .download__os {
     font-size: 0.9rem;
     color: var(--muted);
-    margin: 1.75rem 0 0;
+    margin: 1.25rem 0 0;
   }
 
   /* ---------- features ---------- */
 
-  .features { padding: clamp(2rem, 5vw, 3.5rem) 0; }
+  .features { padding: clamp(1.25rem, 2.5vw, 2rem) 0; }
 
   .section__title {
     font-size: clamp(1.6rem, 3.5vw, 2.25rem);
-    margin-bottom: 1.5rem;
+    margin-bottom: 1rem;
   }
 
-  .section__title em,
-  .download__title em {
+  .section__title em {
     font-style: normal;
     color: var(--gold);
   }
@@ -491,8 +483,8 @@
 
   .closing {
     text-align: center;
-    margin-top: clamp(1.5rem, 4vw, 2.5rem);
-    padding: clamp(2.5rem, 6vw, 4rem) 0;
+    margin-top: 0;
+    padding: clamp(1.25rem, 2.5vw, 1.75rem) 0;
     border-top: 1px solid var(--rule);
     border-bottom: 1px solid var(--rule);
   }
@@ -518,8 +510,8 @@
   /* ---------- footer ---------- */
 
   .foot {
-    padding-top: clamp(2rem, 4vw, 3rem);
-    padding-bottom: 3rem;
+    padding-top: clamp(1.25rem, 2.5vw, 2rem);
+    padding-bottom: 1.5rem;
     font-size: 0.9375rem;
     color: var(--muted);
   }
@@ -549,21 +541,22 @@
   }
 
   @media (max-width: 47.99rem) {
-    .hero {
-      min-height: 0;
-      padding-bottom: clamp(1.5rem, 3vw, 2.5rem);
+    .top {
       background-image:
-        linear-gradient(rgba(10, 15, 21, 0.72), rgba(10, 15, 21, 0.72)),
+        linear-gradient(rgba(10, 15, 21, 0.74), rgba(10, 15, 21, 0.74)),
         url("kotu-bg.png");
     }
-    .hero__stage { position: absolute; inset: 0; min-height: 0; flex: none; }
-    .hero__img { left: auto; right: -10%; opacity: 0.25; }
-    .hero__fade { display: none; }
+    .top__grid {
+      grid-template-columns: minmax(0, 1fr);
+      grid-template-rows: auto;
+      grid-template-areas: "copy" "get" "badges";
+      row-gap: 1.5rem;
+    }
     .hero__copy { max-width: none; }
+    .download { justify-self: stretch; }
+    .hero__img { top: 0; left: auto; right: -10%; height: 100%; opacity: 0.6; }
     .cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .brand__sub { display: none; }
-    .nav .btn { padding: 0.55rem 0.9rem; font-size: 0.9rem; }
-    .nav .btn svg { display: none; }
   }
 
   @media (max-width: 28rem) {
@@ -591,18 +584,14 @@
     </a>
     <nav class="nav__links" aria-label="Main">
       <a class="nav__link" href="#features">Features</a>
-      <a class="btn btn--gold" href="#download">
-        Download KOTU
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v12m0 0l-5-5m5 5l5-5M5 20h14"/></svg>
-      </a>
     </nav>
   </div>
 </header>
 
 <main id="top">
 
-  <section class="hero">
-    <div class="wrap hero__content">
+  <section class="top" aria-label="KOTU">
+    <div class="wrap top__grid">
       <div class="hero__copy">
         <h1 class="hero__wordmark">KOTU</h1>
         <p class="hero__sub">King of the Util</p>
@@ -612,80 +601,70 @@
           <span>Document viewer · Archival · H/W info</span>
         </p>
       </div>
+
+      <div class="download" id="download">
+        <div class="downloads">
+          <div class="option">
+            <a class="btn btn--gold btn--lg"
+               href="https://github.com/zpstudios/kotu/releases/latest"
+               data-variant="installer">
+              Download KOTU
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v12m0 0l-5-5m5 5l5-5M5 20h14"/></svg>
+            </a>
+            <p class="option__file">KOTU-win-Setup.exe<span class="option__ver"></span></p>
+            <p class="option__note">
+              Registers in the Start menu and updates itself. No administrator rights needed.
+            </p>
+          </div>
+
+          <div class="option">
+            <a class="btn btn--ghost btn--lg"
+               href="https://github.com/zpstudios/kotu/releases/latest"
+               data-variant="portable">Portable version</a>
+            <p class="option__file">KOTU-win-Portable.zip<span class="option__ver"></span></p>
+            <p class="option__note">
+              Unzip into any folder and run it from there. It updates itself too.
+            </p>
+          </div>
+        </div>
+
+        <p class="download__os">Works on Windows 10 / 11 (64-bit)</p>
+      </div>
+
       <div class="hero__stage" aria-hidden="true">
         <img class="hero__img" src="kotu-hero.png" alt="" width="1450" height="1090" loading="eager" decoding="async" onerror="this.style.display='none'">
       </div>
-    </div>
-    <div class="hero__fade" aria-hidden="true"></div>
-  </section>
 
-  <section class="wrap" aria-label="Why KOTU">
-    <ul class="badges">
-      <li class="badge">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 12v8H4v-8"/><path d="M2 7h20v5H2z"/><path d="M12 7v13"/></svg>
-        <div>
-          <p class="badge__title">No Bloat</p>
-          <p class="badge__sub">Just what you need</p>
-        </div>
-      </li>
-      <li class="badge">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17.9 17.9A10 10 0 0 1 2 12s3-7 10-7a9.7 9.7 0 0 1 3.5.6"/><path d="M22 12s-1 2.3-3 4"/><path d="M9.9 9.9a3 3 0 0 0 4.2 4.2"/><path d="M3 3l18 18"/></svg>
-        <div>
-          <p class="badge__title">No Ads, No Tracking</p>
-          <p class="badge__sub">Nothing runs in the background</p>
-        </div>
-      </li>
-      <li class="badge">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/><circle cx="12" cy="16" r="1"/></svg>
-        <div>
-          <p class="badge__title">No Personal Info Collection</p>
-          <p class="badge__sub">Your privacy is respected</p>
-        </div>
-      </li>
-      <li class="badge">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg>
-        <div>
-          <p class="badge__title">100% Free License</p>
-          <p class="badge__sub">Personal &amp; Commercial Use</p>
-        </div>
-      </li>
-    </ul>
-  </section>
-
-  <section class="download" id="download">
-    <div class="wrap">
-      <h2 class="download__title">Get <em>KOTU</em></h2>
-      <p class="download__lead">
-        One Windows app for the files you open every day. Video, audio, images,
-        documents, PDFs and archives all open in the same window.
-      </p>
-
-      <div class="downloads">
-        <div class="option">
-          <a class="btn btn--gold btn--lg"
-             href="https://github.com/zpstudios/kotu/releases/latest"
-             data-variant="installer">
-            Download KOTU
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v12m0 0l-5-5m5 5l5-5M5 20h14"/></svg>
-          </a>
-          <p class="option__file">KOTU-win-Setup.exe<span class="option__ver"></span></p>
-          <p class="option__note">
-            Registers in the Start menu and updates itself. No administrator rights needed.
-          </p>
-        </div>
-
-        <div class="option">
-          <a class="btn btn--ghost btn--lg"
-             href="https://github.com/zpstudios/kotu/releases/latest"
-             data-variant="portable">Portable version</a>
-          <p class="option__file">KOTU-win-Portable.zip<span class="option__ver"></span></p>
-          <p class="option__note">
-            Unzip into any folder and run it from there. It updates itself too.
-          </p>
-        </div>
-      </div>
-
-      <p class="download__os">Works on Windows 10 / 11 (64-bit)</p>
+      <ul class="badges" aria-label="Why KOTU">
+        <li class="badge">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 12v8H4v-8"/><path d="M2 7h20v5H2z"/><path d="M12 7v13"/></svg>
+          <div>
+            <p class="badge__title">No Bloat</p>
+            <p class="badge__sub">Just what you need</p>
+          </div>
+        </li>
+        <li class="badge">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17.9 17.9A10 10 0 0 1 2 12s3-7 10-7a9.7 9.7 0 0 1 3.5.6"/><path d="M22 12s-1 2.3-3 4"/><path d="M9.9 9.9a3 3 0 0 0 4.2 4.2"/><path d="M3 3l18 18"/></svg>
+          <div>
+            <p class="badge__title">No Ads, No Tracking</p>
+            <p class="badge__sub">Nothing runs in the background</p>
+          </div>
+        </li>
+        <li class="badge">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/><circle cx="12" cy="16" r="1"/></svg>
+          <div>
+            <p class="badge__title">No Personal Info Collection</p>
+            <p class="badge__sub">Your privacy is respected</p>
+          </div>
+        </li>
+        <li class="badge">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg>
+          <div>
+            <p class="badge__title">100% Free License</p>
+            <p class="badge__sub">Personal &amp; Commercial Use</p>
+          </div>
+        </li>
+      </ul>
     </div>
   </section>
 
