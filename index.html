@@ -40,8 +40,25 @@
 
   var kotuChannel = readChannel();
 
+  /* Promoter codes arriving as ?r=... on the URL, one letter per person
+     handing out links: a = Kim Minho, b = Kim Sunwoo, c = Choi Soyeon.
+     Anything not listed, or no r at all, is reported as 'none'. */
+  var KNOWN_PROMOTERS = ['a', 'b', 'c'];
+
+  function readPromoter() {
+    try {
+      var code = new URLSearchParams(window.location.search).get('r');
+      return KNOWN_PROMOTERS.indexOf(code) !== -1 ? code : 'none';
+    } catch (err) {
+      return 'none';
+    }
+  }
+
+  var kotuPromoter = readPromoter();
+
   gtag('config', 'G-GD8KEMMKLN', {
     channel: kotuChannel,
+    promoter: kotuPromoter,
     transport_type: 'beacon'
   });
 </script>
@@ -737,6 +754,7 @@
     gtag('event', 'download_click', {
       variant: link.getAttribute('data-variant'),
       channel: kotuChannel,
+      promoter: kotuPromoter,
       transport_type: 'beacon'
     });
   });
