@@ -17,6 +17,11 @@
 
 <link rel="icon" type="image/png" href="kotu-logo.png">
 
+<!-- Web fonts: Inter (variable, 400-900) for all text, JetBrains Mono for file names. -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400..900&family=JetBrains+Mono&display=swap">
+
 <!-- Google Analytics 4 -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-GD8KEMMKLN"></script>
 <script>
@@ -84,7 +89,7 @@
     --m-archive:  #5FC9B8;
     --m-hardware: #E8A55E;
 
-    --font: "Segoe UI Variable Display", "Segoe UI", system-ui, -apple-system, sans-serif;
+    --font: "Inter", "Segoe UI Variable Display", "Segoe UI", system-ui, -apple-system, sans-serif;
   }
 
   *, *::before, *::after { box-sizing: border-box; }
@@ -293,6 +298,9 @@
     letter-spacing: 0.04em;
     line-height: 0.95;
     color: var(--gold);
+    /* Optical alignment: Inter's K sits 3px inside its box, so pull the
+       wordmark left to line its ink up with the subtitle and title. */
+    margin-left: -3px;
   }
 
   .hero__sub {
@@ -394,7 +402,7 @@
 
   .option__file {
     grid-row: 2;
-    font-family: Consolas, "Cascadia Mono", ui-monospace, monospace;
+    font-family: "JetBrains Mono", Consolas, "Cascadia Mono", ui-monospace, monospace;
     font-size: 0.72rem;
     color: var(--muted);
     margin: 0;
