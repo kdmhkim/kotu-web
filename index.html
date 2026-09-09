@@ -355,9 +355,9 @@
   /* File names, notes, OS line and the two buttons form one block at the
      foot of the hero, flush right. Two columns of equal width, so each
      button lines up under its own file name. */
-  /* One block at the foot of the hero, flush right: the OS line on the
-     left, the two buttons beside it, each file name under its button.
-     Three columns, two rows; the OS line is centred on the button row. */
+  /* One block at the foot of the hero, flush right: the two buttons side
+     by side, each file name under its button, and the OS line under both
+     behind a thin rule. Two columns, three rows. */
   .download {
     grid-area: get;
     align-self: end;
@@ -366,27 +366,31 @@
     z-index: 2;
     width: max-content;
     display: grid;
-    grid-template-columns: auto auto auto;
+    grid-template-columns: auto auto;
     column-gap: 0.75rem;
     row-gap: 0.4rem;
     align-items: center;
     text-align: center;
   }
 
+  /* Spans both columns, so its top border runs from the left edge of the
+     first button to the right edge of the second. */
   .download__os {
-    grid-row: 1;
-    grid-column: 1;
-    max-width: 9rem;
+    grid-row: 3;
+    grid-column: 1 / -1;
+    padding-top: 0.4rem;
+    border-top: 1px solid rgba(138, 150, 163, 0.3);
     font-size: 0.7rem;
     line-height: 1.3;
+    white-space: nowrap;
     text-align: right;
     color: var(--muted);
     margin: 0;
   }
 
   .download .btn { grid-row: 1; }
-  .download .btn:nth-of-type(1) { grid-column: 2; }
-  .download .btn:nth-of-type(2) { grid-column: 3; }
+  .download .btn:nth-of-type(1) { grid-column: 1; }
+  .download .btn:nth-of-type(2) { grid-column: 2; }
 
   .option__file {
     grid-row: 2;
@@ -397,8 +401,8 @@
     word-break: break-all;
   }
 
+  .option__file:nth-of-type(1) { grid-column: 1; }
   .option__file:nth-of-type(2) { grid-column: 2; }
-  .option__file:nth-of-type(3) { grid-column: 3; }
 
   /* ---------- features ---------- */
 
@@ -539,7 +543,7 @@
       flex-direction: column;
       gap: 0.5rem;
     }
-    .download__os { max-width: none; }
+    .download__os { white-space: normal; border-top: 0; padding-top: 0; }
     .download .btn { width: 100%; min-width: 0; }
     .hero__img { top: 0; left: auto; right: -10%; height: 100%; opacity: 0.6; }
     .top__grid::before,
@@ -570,7 +574,6 @@
       </div>
 
       <div class="download" id="download">
-        <p class="download__os">Works on Windows 10 / 11 (64-bit)</p>
         <a class="btn btn--gold btn--lg"
            href="https://github.com/zpstudios/kotu/releases/latest"
            data-variant="installer">
@@ -582,6 +585,7 @@
            href="https://github.com/zpstudios/kotu/releases/latest"
            data-variant="portable">Portable version</a>
         <p class="option__file">KOTU-win-Portable.zip<span class="option__ver" data-for="portable"></span></p>
+        <p class="download__os">Works on Windows 10 / 11 (64-bit)</p>
       </div>
 
       <div class="hero__stage" aria-hidden="true">
